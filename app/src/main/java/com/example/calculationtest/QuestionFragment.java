@@ -28,6 +28,7 @@ public class QuestionFragment extends Fragment {
     }
 
 
+    // 键盘输入的逻辑
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,12 +107,17 @@ public class QuestionFragment extends Fragment {
                 if (builder.length() == 0) {
                     builder.append("-1");
                 }
+
+                // 回答正确的逻辑
                 if (Integer.valueOf(builder.toString()).intValue() == myViewModel.getAnswer().getValue()) {
                     myViewModel.answerCorrect();
                     builder.setLength(0);
                     binding.textView9.setText(R.string.answer_corrrect_message);
                     //builder.append(getString(R.string.answer_corrrect_message));
-                } else {
+                }
+
+                // 回答错误：1. 刷新最高分并保存，win界面   2. lose界面
+                else {
                     NavController controller = Navigation.findNavController(v);
                     if (myViewModel.win_flag) {
                         controller.navigate(R.id.action_questionFragment_to_winFragment);

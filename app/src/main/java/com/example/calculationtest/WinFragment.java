@@ -27,7 +27,7 @@ public class WinFragment extends Fragment {
         // Required empty public constructor
     }
 
-
+    // win界面的逻辑
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

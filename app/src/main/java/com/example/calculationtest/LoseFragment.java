@@ -26,7 +26,7 @@ public class LoseFragment extends Fragment {
         // Required empty public constructor
     }
 
-
+    // lose界面的逻辑
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

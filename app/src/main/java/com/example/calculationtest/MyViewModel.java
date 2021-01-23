@@ -21,47 +21,55 @@ public class MyViewModel extends AndroidViewModel {
     private static String SAVE_SHP_DATA_NAME = "save_shp_data_name";
     private static String KEY_CURRENT_SCORE = "key_current_score";
     boolean win_flag = false;
+
     public MyViewModel(@NonNull Application application, SavedStateHandle handle) {
         super(application);
         if (!handle.contains(KEY_HIGH_SCORE)) {
             SharedPreferences shp = getApplication().getSharedPreferences(SAVE_SHP_DATA_NAME, Context.MODE_PRIVATE);
-            handle.set(KEY_HIGH_SCORE,shp.getInt(KEY_HIGH_SCORE,0));
-            handle.set(KEY_LEFT_NUMBER,0);
-            handle.set(KEY_RIGHT_NUMBER,0);
-            handle.set(KEY_OPERATOR,"+");
-            handle.set(KEY_ANSWER,0);
-            handle.set(KEY_CURRENT_SCORE,0);
+            handle.set(KEY_HIGH_SCORE, shp.getInt(KEY_HIGH_SCORE, 0));
+            handle.set(KEY_LEFT_NUMBER, 0);
+            handle.set(KEY_RIGHT_NUMBER, 0);
+            handle.set(KEY_OPERATOR, "+");
+            handle.set(KEY_ANSWER, 0);
+            handle.set(KEY_CURRENT_SCORE, 0);
         }
         this.handle = handle;
     }
-    public MutableLiveData<Integer>getLeftNumber(){
+
+    public MutableLiveData<Integer> getLeftNumber() {
         return handle.getLiveData(KEY_LEFT_NUMBER);
     }
-    public MutableLiveData<Integer>getRightNumber(){
+
+    public MutableLiveData<Integer> getRightNumber() {
         return handle.getLiveData(KEY_RIGHT_NUMBER);
     }
-    public MutableLiveData<String>getOperator() {
+
+    public MutableLiveData<String> getOperator() {
         return handle.getLiveData(KEY_OPERATOR);
     }
-    public MutableLiveData<Integer>getHighScore(){
+
+    public MutableLiveData<Integer> getHighScore() {
         return handle.getLiveData(KEY_HIGH_SCORE);
     }
-    public MutableLiveData<Integer>getCurrentScore(){
+
+    public MutableLiveData<Integer> getCurrentScore() {
         return handle.getLiveData(KEY_CURRENT_SCORE);
     }
-    public MutableLiveData<Integer>getAnswer(){
+
+    public MutableLiveData<Integer> getAnswer() {
         return handle.getLiveData(KEY_ANSWER);
     }
 
-    void generator(){
+    // 随机生成加减法的逻辑
+    void generator() {
         int LEVEL = 20;
         Random random = new Random();
-        int x,y;
+        int x, y;
         x = random.nextInt(LEVEL) + 1;
         y = random.nextInt(LEVEL) + 1;
-        if (x%2==0) {
+        if (x % 2 == 0) {
             getOperator().setValue("+");
-            if (x>y) {
+            if (x > y) {
                 getAnswer().setValue(x);
                 getLeftNumber().setValue(y);
                 getRightNumber().setValue(x - y);
@@ -73,7 +81,7 @@ public class MyViewModel extends AndroidViewModel {
 
         } else {
             getOperator().setValue("-");
-            if (x>y) {
+            if (x > y) {
                 getAnswer().setValue(x - y);
                 getLeftNumber().setValue(x);
                 getRightNumber().setValue(y);
@@ -85,17 +93,19 @@ public class MyViewModel extends AndroidViewModel {
         }
     }
 
+    // 保存结果的逻辑
     @SuppressWarnings("ConstantConditions")
     void save() {
-        SharedPreferences shp = getApplication().getSharedPreferences(SAVE_SHP_DATA_NAME,Context.MODE_PRIVATE);
+        SharedPreferences shp = getApplication().getSharedPreferences(SAVE_SHP_DATA_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = shp.edit();
-        editor.putInt(KEY_HIGH_SCORE,getHighScore().getValue());
+        editor.putInt(KEY_HIGH_SCORE, getHighScore().getValue());
         editor.apply();
     }
 
+    // 更新结果的逻辑
     @SuppressWarnings("ConstantConditions")
-    void answerCorrect(){
-        getCurrentScore().setValue(getCurrentScore().getValue() + 1 );
+    void answerCorrect() {
+        getCurrentScore().setValue(getCurrentScore().getValue() + 1);
         if (getCurrentScore().getValue() > getHighScore().getValue()) {
             getHighScore().setValue(getCurrentScore().getValue());
             win_flag = true;
