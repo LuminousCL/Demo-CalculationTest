@@ -109,5 +109,5 @@ else {
 
 #### 6.nav.xml的逻辑
 
-<img src="app/src/main/res/picture/03.jpeg" width="30.5%" height="30.5%">
+<img src="app/src/main/res/picture/03.jpeg" width="50%" height="50%">
 
