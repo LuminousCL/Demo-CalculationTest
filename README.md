@@ -67,33 +67,47 @@ void generator() {
 
 <br>
 
-#### 2. 重写onCreate方法
+#### 2. MainActivity.java 增加Navigation的按下返回键的逻辑
 
 <br>
 
-初始化binding用于访问xml的UI元件（View对象）  
-`binding = ActivityMainBinding.inflate(layoutInflater)`
 
-<br>
-
-设置root（根/所有）将内容视图设置为activity（活动）的布局的根视图
-`setContentView(binding.root)`
-
-<br>
-
-在按钮上设置点击监听器来执行计算小费的方法 calculateTip()
+#### 3.QuestionFragment.java 写键盘输入的逻辑
+根据键盘设计类似计算器形式键盘输入的onClickListener  
+回答正确的逻辑：  
 ```
-binding.button.setOnClickListener {
-            calculateTip()
-        }
+if (Integer.valueOf(builder.toString()).intValue() == myViewModel.getAnswer().getValue()) {
+                    myViewModel.answerCorrect();
+                    builder.setLength(0);
+                    binding.textView9.setText(R.string.answer_corrrect_message);
+                    //builder.append(getString(R.string.answer_corrrect_message));
+                }
 ```
-<br>
+回答错误的逻辑： 1.刷新最高分并保存，win界面  2.lose界面  
+```
+else {
+                    NavController controller = Navigation.findNavController(v);
+                    if (myViewModel.win_flag) {
+                        controller.navigate(R.id.action_questionFragment_to_winFragment);
+                        myViewModel.win_flag = false;
+                        myViewModel.save();
+                    } else {
+                        controller.navigate(R.id.action_questionFragment_to_loseFragment);
+                    }
+                }
+```
+
 <br>
 
-#### 3.写明计算小费的方法 calculateTip()  
-得到输入的金额转化为成本cost  
-根据选择的按钮获取百分比  
-小费 = 成本 * 百分比 (tip = cost * tipPercentage)  
-四舍五入或取整数roundUp  
-展示小费的金额  
-隐藏键盘  
+#### 4.WinFragment.java 写win界面的逻辑
+
+<br>
+
+#### 5.LoseFragment.java 写lose界面的逻辑
+
+<br>
+
+#### 6.nav.xml的逻辑
+
+<img src="app/src/main/res/picture/03.jpeg" width="30.5%" height="30.5%">
+
